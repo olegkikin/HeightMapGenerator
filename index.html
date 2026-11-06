@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>US Heightmap Generator</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <aside id="panel">
+        <h1>US Heightmap Generator</h1>
+        <p class="sub">
+          Free data: OpenStreetMap basemap (via the openstreetmap.de mirror)
+          + USGS elevation via AWS Terrain Tiles (NED 1/3 arc-second,
+          ~10&nbsp;m). No API key.
+        </p>
+
+        <section>
+          <h2>1 · Select an area</h2>
+          <div class="row">
+            <button id="drawBtn" type="button">✏️ Draw area on map</button>
+            <button id="clearBtn" type="button" class="ghost">Clear</button>
+          </div>
+          <div class="row wrap" id="presets">
+            <button type="button" data-preset="apalachicola">Apalachicola, FL</button>
+            <button type="button" data-preset="everglades">Everglades, FL</button>
+            <button type="button" data-preset="grand-canyon">Grand Canyon, AZ</button>
+            <button type="button" data-preset="denver">Front Range, CO</button>
+            <button type="button" data-preset="smokies">Smoky Mountains, TN</button>
+          </div>
+          <p id="bboxLabel" class="mono dim">No area selected</p>
+        </section>
+
+        <section>
+          <h2>2 · Options</h2>
+          <label>
+            Opacity over map: <span id="opacityVal" class="mono">70%</span>
+            <input id="opacity" type="range" min="0" max="100" value="70" />
+          </label>
+          <label>
+            Resolution (width)
+            <select id="resolution">
+              <option value="512">512 px</option>
+              <option value="1024" selected>1024 px</option>
+              <option value="2048">2048 px</option>
+              <option value="4096">4096 px</option>
+            </select>
+          </label>
+          <label>
+            Colour spectrum
+            <select id="spectrum">
+              <option value="terrain" selected>Terrain (hypsometric)</option>
+              <option value="grayscale">Grayscale (pure heightmap)</option>
+              <option value="viridis">Viridis</option>
+              <option value="inferno">Inferno</option>
+              <option value="rainbow">Rainbow</option>
+            </select>
+          </label>
+          <label class="check">
+            <input id="hillshade" type="checkbox" checked />
+            Blend hillshade (colour spectra only)
+          </label>
+          <label class="check">
+            <input id="logScale" type="checkbox" />
+            Log scale — log(height) instead of linear
+          </label>
+        </section>
+
+        <section>
+          <h2>3 · Generate</h2>
+          <button id="generateBtn" type="button" class="primary">Generate heightmap</button>
+          <div id="progressWrap" hidden>
+            <progress id="progress" max="100" value="0"></progress>
+            <p id="progressLabel" class="dim"></p>
+          </div>
+          <p id="status" class="dim"></p>
+          <p id="stats" class="mono dim"></p>
+          <div class="row wrap" id="downloads" hidden>
+            <button type="button" id="dlSpectrum">⬇ Heightmap (spectrum)</button>
+            <button type="button" id="dlGray">⬇ Heightmap (grayscale)</button>
+            <button type="button" id="dlComposite">⬇ Map + heightmap composite</button>
+          </div>
+        </section>
+
+        <footer class="dim">
+          Elevation: USGS 3DEP / NED via
+          <a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noreferrer">AWS Terrain Tiles</a>.
+          Map © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors.
+          For true 1&nbsp;m LiDAR heightmaps, see the companion Python tool
+          (USGS 3DEP ImageServer).
+        </footer>
+      </aside>
+      <main id="map"></main>
+    </div>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
