@@ -1,5 +1,7 @@
 # US Heightmap Generator (TypeScript)
 
+![Heightmap example](heightmap_screenshot.jpg)
+
 A browser app that:
 
 1. Shows a **US map** (Leaflet) with the standard **OpenStreetMap** style served by the free **tile.openstreetmap.de** mirror, with an automatic Esri World Street Map fallback. Direct tile.openstreetmap.org tiles are unusable from apps: the server answers with an HTTP-200 placeholder PNG reading "Access blocked / App is not following the tile usage policy" (verified from the tile bytes). CARTO basemaps are not an alternative either — keyless requests return an "API KEY REQUIRED" placeholder tile (also byte-verified).
